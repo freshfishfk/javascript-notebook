@@ -55,6 +55,7 @@ var startsWith = function(s1, s2) {
     s2 是一个字符串
     检查 s1 是否以 s2 开头, 返回 true 或者 false
     */
+   
 }
 
 // 用法如下, 作为测试参考
