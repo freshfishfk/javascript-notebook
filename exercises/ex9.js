@@ -224,7 +224,7 @@ var bindAll = function(selector, eventName, callback, responseClass) {
 
     这题做不出来就放弃
     */
-   
+    
 }
 
 
