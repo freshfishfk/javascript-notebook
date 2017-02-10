@@ -33,11 +33,30 @@ var ensure = function(condition, message) {
 
 // 作业 1
 //
-var isPrime = function(n) {
+var isPrime = function(number) {
     /*
     n 是 int
     判断 n 是否是素数(质数)
     */
+    if (typeof number !== 'number' || number<2) {
+      // 不是数字或者数字小于2
+        return false;
+    }
+ 
+    if (number === 2) {//2是质数
+        return true;
+    } else if (number % 2 === 0) {//排除偶数
+        return false;
+    }
+    var squareRoot = Math.sqrt(number);
+
+    　　//因为2已经验证过，所以从3开始；且已经排除偶数，所以每次加2
+    for(var i = 3; i <= squareRoot; i += 2) {
+      if (number % i === 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // 作业 2
@@ -46,6 +65,9 @@ var primeNumbers = function() {
     /*
     返回 100 内的素数列表
     */
+    for (var j = 0; j < 100; j++)
+        if (isPrime(j) == true)
+            log (j+' ')
 }
 
 
@@ -56,6 +78,7 @@ var capString = function(str) {
     给定一个英文句子 str（由空格隔开的单词组成的字符串）
     返回「将句中所有单词变为有且只有首字母大写的形式」的 string
     */
+    
 }
 
 
@@ -112,6 +135,7 @@ var argsFromQuery = function(queryString) {
         'bar': 'far',
     }
     */
+    
 }
 
 
@@ -124,6 +148,14 @@ var ajaxGet = function(url, callback) {
     callback 是一个函数, 在接受服务器响应后调用并传递参数给它
     本题不会就放弃
     */
+    // 创建 AJAX 对象
+    var rq = new XMLHttpRequest()
+    // 设置请求方法和请求地址
+    rq.open('GET', url, true)
+    // 注册响应函数
+    rq.onreadystatechange = callback
+    // 发送请求
+    rq.send()
 }
 
 
@@ -139,6 +171,18 @@ var ajax = function(request) {
     
     本题不会就放弃, 本题带了一个用法在下方
     */
+    var method = request.method
+    var path = request.url
+    var data = request.data
+    var reseponseCallback = request.callback
+    // 创建 AJAX 对象
+    var rq = new XMLHttpRequest()
+    // 设置请求方法和请求地址
+    rq.open(method, path, true)
+    // 注册响应函数
+    rq.onreadystatechange = reseponseCallback
+    // 发送请求
+    rq.send(data)
 }
 
 var r = {
@@ -149,4 +193,5 @@ var r = {
         console.log('响应', response)
     }
 }
-ajax(r)
+
+//ajax(r)

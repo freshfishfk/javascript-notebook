@@ -87,27 +87,35 @@ var split = function(s, delimiter=' ') {
     注意, 测试 array 是否相等得自己写一个函数用循环来跑
     */
    var result = []
-   var start = 0
+   var pointer = 0
    //引入分隔符的长度
    var len = delimiter.length
-    for (var i = 0; i < s.length; i++){
-        if (s.slice(i, i + len) == delimiter) {
-            
-            result.push(s.slice(start,i))
-            start = i + len
-        }
-        
-    }
-    result.push(s.slice(start, s.length))
-    return result
-        
-    /*
-    如果是分隔符多个字符组成？参照作业
-     */
-    
+   log(delimiter, len)
 
+    for (var i = 0; i < s.length; i++){
+        if (s.slice(i, i + len) === delimiter) {
+            result.push(s.slice(pointer, i))
+            s.slice(pointer, i)
+            log(pointer,'vivf')
+            log(s.slice(pointer, i), '元素')
+            pointer = i + len
+            
+        }     
+    }
+    //push最后一个元素
+    result.push(s.slice(pointer, s.length))
+    log(result)
+    return result
+
+    
+    //如果是分隔符多个字符组成？参照作业 
 }
 
+var test_split = function(){
+    ensureEqual(split('hello#gua','#'), ['hello', 'gua'],'split 测试1')
+    ensureEqual(split('hello gua'), ["hello", "gua"],'split 测试2')
+}
+test_split()
 
 // 作业 3
 // 实现函数
@@ -199,15 +207,15 @@ var addTable = function() {
 
 // 作业 7
 // 实现函数
-var range1 = function(start, end) {
+var range1 = function(pointer, end) {
     /*
-    start end 都是 int
+    pointer end 都是 int
 
-    返回一个 array, 假设 start 为 1, end 为 5, 返回数据如下
+    返回一个 array, 假设 pointer 为 1, end 为 5, 返回数据如下
     [1, 2, 3, 4]
     */
    var res = []
-   for (i = start; i < end; i++){
+   for (i = pointer; i < end; i++){
         res.push(i)
    }
    return res
@@ -216,20 +224,20 @@ var range1 = function(start, end) {
 
 // 作业 8
 // 实现函数
-var range2 = function(start, end, step=1) {
+var range2 = function(pointer, end, step=1) {
     /*
-    start end step 都是数字
+    pointer end step 都是数字
     step 是大于 0 的正整数
 
     返回一个 array
-    假设 start=1, end=5, step=1 返回数据如下
+    假设 pointer=1, end=5, step=1 返回数据如下
     [1, 2, 3, 4]
-    假设 start=0, end=6, step=2 返回数据如下
+    假设 pointer=0, end=6, step=2 返回数据如下
     [0, 2, 4]
     */
    
     var res = []
-    for (i = start; i < end; i = i + step){
+    for (i = pointer; i < end; i = i + step){
         res.push(i)
     }
     return res
@@ -238,27 +246,27 @@ var range2 = function(start, end, step=1) {
 
 // 作业 9
 // 实现函数
-var range3 = function(start, end, step=1) {
+var range3 = function(pointer, end, step=1) {
     /*
-    start end step 都是数字
+    pointer end step 都是数字
 
     和 range2 一样, 但是要求支持负数 step
     使用 while 循环
     返回一个 array
-    假设 start=1, end=5, step=1 返回数据如下
+    假设 pointer=1, end=5, step=1 返回数据如下
     [1, 2, 3, 4]
-    假设 start=6, end=0, step=-1 返回数据如下
+    假设 pointer=6, end=0, step=-1 返回数据如下
     [6, 5, 4, 3, 2, 1]
 
     */
     //乱了乱了
     // var res = []
-    // if (start > end){
-    //     i = start
-    //     start = end
+    // if (pointer > end){
+    //     i = pointer
+    //     pointer = end
     //     end = i
     // }
-    //  for (i = start; i > end; i = i + step){
+    //  for (i = pointer; i > end; i = i + step){
     //     res.push(i)
     // }
     // return res
@@ -464,7 +472,7 @@ task 默认是不能编辑的
 
 2, split
 用循环找到 delimiter
-记录两个变量 start 和 end 来 slice 出子字符串
+记录两个变量 pointer 和 end 来 slice 出子字符串
 
 
 3, replaceAll
