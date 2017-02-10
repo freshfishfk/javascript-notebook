@@ -113,3 +113,58 @@ d.getMilliseconds()
 d.getDay()
 星期几, 0-6
 */
+
+////================================================
+// 6 AJAX
+// 
+// 
+// 创建 AJAX 对象
+var r = new XMLHttpRequest()
+// 设置请求方法和请求地址
+r.open('POST', '/login', true)
+// 设置发送的数据的格式
+r.setRequestHeader('Content-Type', 'application/json')
+// 注册响应函数
+r.onreadystatechange = function() {
+    if (r.readyState === 4) {
+        console.log('state change', r, r.status, r.response)
+        var response = JSON.parse(r.response)
+        console.log('response', response)
+    } else {
+        console.log('change')
+    }
+}
+// 发送请求
+var account = {
+    username: 'gua',
+    password: '123',
+}
+var data = JSON.stringify(account)
+r.send(data)
+
+//封装后
+//
+var ajax = function(request) {
+    var method = request.method
+    var path = request.url
+    var data = request.data
+    var reseponseCallback = request.callback
+    // 创建 AJAX 对象
+    var rq = new XMLHttpRequest()
+    var url = request.url
+    // 设置请求方法和请求地址
+    rq.open(method, path, true)
+    // 注册响应函数
+    rq.onreadystatechange = reseponseCallback
+    // 发送请求
+    rq.send(data)
+}
+//传入一个自定义的对象
+var r = {
+    method: 'POST',
+    url: '/login',
+    data: 'username=gua',
+    callback: function(response) {
+        console.log('响应', response)
+    }
+}
