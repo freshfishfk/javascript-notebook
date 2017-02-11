@@ -101,6 +101,9 @@ var letterCount = function(str) {
     参数 "hello"
     返回值 [['h', 1], ['e', 1], ['l', 2], ['o', 1]]
     */
+    for (i = 0; i < str.length; i++){
+        if 
+    }
 }
 
 
