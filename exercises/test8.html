@@ -20,11 +20,11 @@
             </div>
             <!-- todo 列表 -->
             <div id="id-div-container">
-                <div class='todo-cell'>
+                <!-- <div class='todo-cell'>
                     <button class='todo-done'>完成</button>
                     <button class='todo-delete'>删除</button>
                     <span contenteditable='true'>上课</span>
-                </div>
+                </div> -->
             </div>
         </div>
 <script>
@@ -51,41 +51,98 @@
 var log = function() {
     console.log.apply(console, arguments)
 }
+var todoList = []
+
+var todoInput = document.querySelector('#id-input-todo')
+todoInput.addEventListener("keydown", function(){
+    log('add keydown', event, event.target)
+    if (event.key == "Enter"){
+        var task = todoInput.value
+        // 生成 todo 对象
+        var todo = {
+            'task': task,
+            'time': currentTime()
+        }
+        log(todo)
+        todoList.push(todo)
+        saveTodos()
+        insertTodo(todo)
+
+        //清空输入框
+        todoInput.value = ''
+    }
+})
+
 
 // 给 add button 绑定添加 todo 事件
 var addButton = document.querySelector('#id-button-add')
 addButton.addEventListener('click', function(){
     // 获得 input.value
-    var todoInput = document.querySelector('#id-input-todo')
-    var todo = todoInput.value
-    // 添加到 container 中
+    ///var todoInput = document.querySelector('#id-input-todo')
+    // var todo = todoInput.value
+    // // 添加到 container 中
+    // var todoContainer = document.querySelector('#id-div-container')
+    // var t = templateTodo(todo)
+    // // 这个方法用来添加元素更加方便, 不需要 createElement
+    // todoContainer.insertAdjacentHTML('beforeend', t);
+    var task = todoInput.value
+    // 生成 todo 对象
+    var todo = {
+        'task': task,
+        //'time': currentTime()
+    }
+    log(todo)
+    todoList.push(todo)
+    saveTodos()
+    insertTodo(todo)
+
+    //清空输入框
+    todoInput.value = ''
+})
+
+
+var insertTodo = function(todo){
     var todoContainer = document.querySelector('#id-div-container')
     var t = templateTodo(todo)
     // 这个方法用来添加元素更加方便, 不需要 createElement
     todoContainer.insertAdjacentHTML('beforeend', t);
-})
+}
+
 
 var templateTodo = function(todo) {
     var t = `
         <div class='todo-cell'>
             <button class='todo-done'>完成</button>
             <button class='todo-delete'>删除</button>
-            <span contenteditable='true'>${todo}</span>
+            <span contenteditable='true'>${todo.task}</span>
         </div>
     `
     return t
 }
 //localstorage
+
 var saveTodos = function(){
-    var s = JSON.stringify(todolist)
-    localstorage.todos = s
+    var s = JSON.stringify(todoList)
+    localStorage.todos = s
 }
 var loadTodos = function(){
-    s = localstorage.todos
+    s = localStorage.todos
     return JSON.parse(s)
 }
 
-
+// 返回自己在父元素中的下标
+var indexOfElement = function(element) {
+    log(element)
+    var parent = element.parentElement
+    log("parent:", parent)
+    log("parent.element:", element.parentElement)
+    for (var i = 0; i < parent.children.length; i++) {
+        var e = parent.children[i]
+        if (e === element) {
+            return i
+        }
+    }
+}
 // 事件委托相关概念
 // ===
 //
@@ -99,9 +156,18 @@ var todoContainer = document.querySelector('#id-div-container')
 //loseBlur
 todoContainer.addEventListener("keydown", function(event){
     var target = event.target
-    if (target.key == "Enter"){
+    log('container keydown', event, event.target)
+    if (event.key == "Enter"){
+        log('按了回车')
+        //失去焦点
         target.blur()
+        //阻止事件
         event.preventDefault()
+        var index = indexOfElement(target.parentElement)
+        log(index)
+        // 把元素在 todoList 中更新
+        todoList[index].task = target.innerHTML
+        saveTodos()
     }
 
 })
@@ -118,7 +184,14 @@ todoContainer.addEventListener('click', function(event){
         toggleClass(todoDiv, 'done')
     } else if (target.classList.contains('todo-delete')) {
         log('delete')
+        //前面板内容删除
         var todoDiv = target.parentElement
+        
+        //存储数据的删除
+        var index = indexOfElement(target.parentElement)
+        log(index)
+        todoList.splice(index,1)
+        saveTodos()
         todoDiv.remove()
     }
 })
@@ -179,7 +252,11 @@ log('反序列化后的数组', typeof a, a)
 // 毫秒, 0-999
 // d.getDay()
 // 星期几, 0-6
-
+todoList = loadTodos()
+for (var i = 0; i < todoList.length; i++) {
+    var todo = todoList[i]
+    insertTodo(todo)
+}
 </script>
     </body>
 </html>
