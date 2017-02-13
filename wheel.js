@@ -168,3 +168,14 @@ var r = {
         console.log('响应', response)
     }
 }
+
+//7 返回自己在父元素中的下标
+var indexOfElement = function(element) {
+    var parent = element.parentElement
+    for (var i = 0; i < parent.children.length; i++) {
+        var e = parent.children[i]
+        if (e === element) {
+            return i
+        }
+    }
+}
