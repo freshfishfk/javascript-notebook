@@ -89,7 +89,7 @@ addButton.addEventListener('click', function(){
     // 生成 todo 对象
     var todo = {
         'task': task,
-        //'time': currentTime()
+        'time': currentTime()
     }
     log(todo)
     todoList.push(todo)
@@ -115,6 +115,7 @@ var templateTodo = function(todo) {
             <button class='todo-done'>完成</button>
             <button class='todo-delete'>删除</button>
             <span contenteditable='true'>${todo.task}</span>
+            <span >${todo.time}</span>
         </div>
     `
     return t
@@ -231,7 +232,16 @@ log('反序列化后的数组', typeof a, a)
 
 // 使用 JSON 序列化后, 就可以把 todo 存入浏览器的 localStorage 了
 
-
+var currentTime = function() {
+    var d = new Date()
+    var month = d.getMonth() + 1
+    var date = d.getDate()
+    var hours = d.getHours()
+    var minutes = d.getMinutes()
+    var seconds = d.getSeconds()
+    var timeString = `${month}/${date} ${hours}:${minutes}:${seconds}`
+    return timeString
+}
 // 时间标准库
 // ===
 // 常用用法如下
