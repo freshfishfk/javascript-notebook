@@ -53,6 +53,8 @@ var log = function() {
 }
 var todoList = []
 
+
+//回车表示add按钮
 var todoInput = document.querySelector('#id-input-todo')
 todoInput.addEventListener("keydown", function(){
     log('add keydown', event, event.target)
@@ -114,7 +116,8 @@ var templateTodo = function(todo) {
         <div class='todo-cell'>
             <button class='todo-done'>完成</button>
             <button class='todo-delete'>删除</button>
-            <span contenteditable='true'>${todo.task}</span>
+            <button class='todo-edit'>编辑</button>
+            <span class= 'content'>${todo.task}</span>
             <span >${todo.time}</span>
         </div>
     `
@@ -157,6 +160,7 @@ var todoContainer = document.querySelector('#id-div-container')
 //loseBlur
 todoContainer.addEventListener("keydown", function(event){
     var target = event.target
+    var todoDiv = target.parentElement
     log('container keydown', event, event.target)
     if (event.key == "Enter"){
         log('按了回车')
@@ -164,6 +168,8 @@ todoContainer.addEventListener("keydown", function(event){
         target.blur()
         //阻止事件
         event.preventDefault()
+        //重置编辑属性
+        todoDiv.querySelector('.content').setAttribute('contenteditable','false')
         var index = indexOfElement(target.parentElement)
         log(index)
         // 把元素在 todoList 中更新
@@ -178,22 +184,26 @@ todoContainer.addEventListener("keydown", function(event){
 todoContainer.addEventListener('click', function(event){
     log('container click', event, event.target)
     var target = event.target
+    var todoDiv = target.parentElement
     if(target.classList.contains('todo-done')) {
-        log('done')
         // 给 todo div 开关一个状态 class
-        var todoDiv = target.parentElement
+        //var todoDiv = target.parentElement
         toggleClass(todoDiv, 'done')
     } else if (target.classList.contains('todo-delete')) {
         log('delete')
         //前面板内容删除
-        var todoDiv = target.parentElement
-        
+        //var todoDiv = target.parentElement
         //存储数据的删除
         var index = indexOfElement(target.parentElement)
-        log(index)
         todoList.splice(index,1)
         saveTodos()
         todoDiv.remove()
+    }
+    //按下编辑按钮 可编辑
+    else if (target.classList.contains('todo-edit')){
+        var context = todoDiv.querySelector('.content')
+        log(context)
+        context.setAttribute('contenteditable','true')
     }
 })
 
@@ -234,12 +244,19 @@ log('反序列化后的数组', typeof a, a)
 
 var currentTime = function() {
     var d = new Date()
+    var year = d.getFullYear()
     var month = d.getMonth() + 1
     var date = d.getDate()
     var hours = d.getHours()
     var minutes = d.getMinutes()
-    var seconds = d.getSeconds()
-    var timeString = `${month}/${date} ${hours}:${minutes}:${seconds}`
+    var seconds = d.getSeconds()    
+    if (hours < 10)
+        hours = '0' + hours
+    if (minutes < 10)
+        minutes = '0' + minutes
+    if (seconds < 10)
+        seconds = '0' + seconds
+    var timeString = `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`
     return timeString
 }
 // 时间标准库

@@ -113,7 +113,24 @@ d.getMilliseconds()
 d.getDay()
 星期几, 0-6
 */
-
+//标准格式 时间戳
+var currentTime = function() {
+    var d = new Date()
+    var year = d.getFullYear()
+    var month = d.getMonth() + 1
+    var date = d.getDate()
+    var hours = d.getHours()
+    var minutes = d.getMinutes()
+    var seconds = d.getSeconds()    
+    if (hours < 10)
+        hours = '0' + hours
+    if (minutes < 10)
+        minutes = '0' + minutes
+    if (seconds < 10)
+        seconds = '0' + seconds
+    var timeString = `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`
+    return timeString
+}
 ////================================================
 // 6 AJAX
 // 
