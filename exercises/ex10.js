@@ -101,13 +101,15 @@ var letterCount = function(str) {
     参数 "hello"
     返回值 [['h', 1], ['e', 1], ['l', 2], ['o', 1]]
     */
-    var chars = []
-    for (var i = 0; i < str.length; i++){
-        if str[i] notin chars
-            chars.push(str[i])
-    }
+    // var keys = Object.keys(str)
 
-    
+    // var chars = []
+    // for (var i = 0; i < str.length; i++){
+    //     if str[i] notin chars
+    //         chars.push(str[i])
+    // }
+
+
 }
 
 
@@ -126,8 +128,18 @@ var queryFromObject = function(param) {
     
     注意, 使用 Object.keys 函数
     */
+    
+    var res = []
+    var keys = Object.keys(param)
+    for (var i = 0; i < keys.length; i++) {
+        var k = keys[i]
+        //为何点运算不起作用
+        //log(param.k)
+        res = res + k + '=' + param[k] + '&'
+    }
+    res = res.slice(0, -1)
+    return res
 }
-
 
 // 作业 6
 //
@@ -136,6 +148,7 @@ var argsFromQuery = function(queryString) {
     queryString 是一个 string
     例子如下
     queryString 是 foo=1&bar=far
+    //一般也是get带的参数
     返回如下 object, 顺序不做要求(foo bar 的顺序)
     {
         'foo': 1,
@@ -164,6 +177,7 @@ var ajaxGet = function(url, callback) {
     // 发送请求
     rq.send()
 }
+
 
 
 // 作业 8
